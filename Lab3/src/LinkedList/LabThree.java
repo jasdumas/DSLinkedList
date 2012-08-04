@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class LabThree {
 
@@ -16,6 +18,9 @@ public class LabThree {
 		BufferedReader 	input;
 		BufferedWriter 	output;
 		ListNode 		node;
+		ListNode		row;
+		ListNode		col;
+		List[]		listArray;
 		LabThree		lab;
 		String []		stringSplit;
 		int				data;
@@ -38,26 +43,12 @@ public class LabThree {
         try {
             input = new BufferedReader(new FileReader(args[0]));
             output = new BufferedWriter(new FileWriter(args[1]));
-        } catch (Exception exception) {
+        } catch (IOException exception) {
             System.err.println(exception.toString());
             return;
         }
 		
-        //data = 2;
-		//node = new LinkedList.ListNode(data);
 		List list = new List();
-		
-		//node.printNode();
-		
-		//list.InsertNode(2);
-		//list.InsertNode(3);
-		//list.InsertNode(4);
-		//list.InsertNode(5);
-		//list.InsertNode(6);
-		//list.InsertNode(7);
-		
-		//list.printList();
-		//System.out.println();
 		
 		//listSize = list.ListSize();
 		//System.out.print("list size = " + listSize);
@@ -70,7 +61,7 @@ public class LabThree {
 			try {
 				dimension = Integer.parseInt(z);
 			}catch (Exception e) {
-				System.err.println(e.toString());
+				System.err.println(e);
 			}
 			
 			z = lab.readMatrix(input);
@@ -81,25 +72,50 @@ public class LabThree {
         	}
         	
         	// build the lists
-        	index = 0;
+        	stringSplit = null;
+        	listArray = new List[dimension];
         	for (int i = 0; i < dimension; i++) {
+        		try{
+        			list.setHeader(i, null);
+        			stringSplit = z.split(" ");
+        		} catch (Exception exception) {
+        			System.err.println(exception);
+        		}
         		
-        		stringSplit = z.split(" ");	//split the string with a space delimiter
         		//System.out.println(stringSplit[index]);
-        		data = Integer.parseInt(stringSplit[index]);	//set the data variable as the integer parsed from the string
+        		index = 0;
         		
-        		list.InsertNode(data); //insert each integer from the string as a new node in the list
+        		for (int j = 0; j < dimension; j++) {
         		
-        		index++;
+        			try {
+        				data = Integer.parseInt(stringSplit[index]);	//set the data variable as the integer parsed from the string
+                		list.InsertNode(data, j); 						//insert each integer from the string as a new node in the list
+        			} catch (Exception e) {
+        				System.err.println(e);
+        			}
+        			
+            		index++;
+        		}
+        		
+        		//using getRow() method to determine the row the list is representing
+        		//row = list.getRow();
+        		//row.printNode();
+        		
+        		listArray[i] = list;
+        		//List testList = listArray[i];
+        		//testList.printList();
+        		
+        		
+        		//list.printList();
+        		list.clearList();
+        		z = lab.readMatrix(input);
         	}
-        	
-        	System.out.println("The list is as follows:");
-        	list.printList();
+        	       	
+        	//System.out.println("The list is as follows:");
+        	//list.printList();
         	
         	// send data to output
-        	//lab.writeOutput(list, output);
-        	
-        	z = lab.readMatrix(input);
+        	lab.writeOutput(listArray, output);
 		}
 	}
 	
@@ -128,19 +144,33 @@ public class LabThree {
 	 * @param det		the value of the determinant for the matrix.
 	 * @param output	the output file.
 	 */
-	private void writeOutput(List list, BufferedWriter output) {
+	private void writeOutput(List[] listArray, BufferedWriter output) {
 		 
-		//String listString;
+		int size;
+		List list;
 		
-		//listString = list.printList();
+		size = listArray.length;
+		System.out.println(size);
+		
+		List testList = listArray[0];
+		System.out.println(testList.matrixSize());
+		testList.printList();
 		
 		 try {
 			 	output.write("The following matrix:");
 			 	output.newLine();
 			 	output.newLine();
-			 	//output.write(list.printList());
-	        	
 			 	
+			 	for (int i = 0; i < size; i++) {
+			
+			 		list = listArray[i];
+			 		
+			 		list.printList();
+			 		
+			 		output.write(list.nodeValue(list, i));
+			
+			 	}
+	        	
 	        } catch (IOException ioException) {
 	            System.err.println(ioException.toString());
 	            System.exit(3);
