@@ -8,7 +8,9 @@ public class List {
 	private int matrixSize;
 	private int listSize;
 	
-	// constructor to create the list
+	/**
+	 * Constructor to create the list object
+	 */
 	public List() {
 		header = null;
 		first = null;
@@ -17,7 +19,10 @@ public class List {
 		listSize = 0;
 	}
 	
-	// checks if list is empty - returns true if empty
+	/**
+	 * Checks if list is empty
+	 * @return True if empty
+	 */
 	public boolean isEmpty() {
 		
 		if (first == null) {
@@ -26,10 +31,14 @@ public class List {
 		else return false;
 	}
 	
-	// insert node at end of list - increment the size of the list
-	public void InsertNode(int data, Integer col) {
+	/**
+	 * Insert a node at the end of the list containing the specified data
+	 * Increment the size of the list each time
+	 * @param data	The data value of the new node
+	 */
+	public void InsertNode(int data) {
 		
-		ListNode node = new LinkedList.ListNode(data, col);
+		ListNode node = new LinkedList.ListNode(data);
 		
 		if (first == null) {
 			first = node;
@@ -49,12 +58,13 @@ public class List {
 		matrixSize = matrixSize+1;
 	}
 	
-	// delete node in specified column
-	public ListNode deleteNode(List list, int col) {
-		
-		//System.out.println("the column is " + col);
-		//System.out.println("the list is:");
-		//list.printList();
+	/**
+	 * Delete the node in the specified column position
+	 * @param list	The list to delete the node from
+	 * @param col	The column position of the node to be deleted
+	 * @return	The node deleted from the list
+	 */
+	public ListNode deleteNode(List list, Integer col) {
 		
 		ListNode currentNode = first;
 		ListNode temp = null;
@@ -114,31 +124,39 @@ public class List {
 		return null;
 	}
 	
-	// set the header node as the passed-in value - this will be used as the row number
-	public void setHeader(int data, Integer col) {
+	/**
+	 * Sets the header node as the passed-in value
+	 * The header node contains the row number
+	 * @param data	The row number of the list
+	 */
+	public void setHeader(int data) {
 		
-		ListNode headerNode = new LinkedList.ListNode(data, col);
+		ListNode headerNode = new LinkedList.ListNode(data);
 		
 		header = headerNode;
 		header.next = first;
 	}
 	
-	// get the row number of the node
+	/**
+	 * Gets the row number of the node
+	 * @return The row number
+	 */
 	public ListNode getRow() {
 		return header;
 	}
 	
-	// get the column number of the node - NEEDS TO BE UPDATED! - may not be needed
-	//public ListNode getCol() {
-	//	return header;
-	//}
-	
-	// return the size of the matrix
+	/**
+	 * Returns the full size of the matrix (number of nodes in matrix)
+	 * @return The number of nodes in the matrix
+	 */
 	public int matrixSize() {
 		return matrixSize;
 	}
 	
-	// return the size of the individual list
+	/**
+	 * Returns the size of the individual list
+	 * @return The size of the list
+	 */
 	public int listSize() {
 		
 		ListNode currentNode = first;
@@ -152,7 +170,9 @@ public class List {
 		return listSize;
 	}
 		
-	// print the list
+	/**
+	 * Prints the list to the screen
+	 */
 	public void printList() {
 		
 		ListNode currentNode = first;
@@ -166,7 +186,9 @@ public class List {
 		System.out.println();
 	}
 	
-	// clear the list
+	/**
+	 * Sets all of the values of the list to null -- clearing the list
+	 */
 	public void clearList() {
 		
 		ListNode currentNode = first;
@@ -182,7 +204,11 @@ public class List {
 		}
 	}
 	
-	// return the value of the node in the specified position of the list
+	/**
+	 * Returns the value of the node in the specified column (position) of the list
+	 * @param col The column of the node whose value is being returned
+	 * @return The value of the node
+	 */
 	public int nodeValue(int col){
 		
 		ListNode currentNode = first;

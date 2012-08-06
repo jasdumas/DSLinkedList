@@ -7,24 +7,26 @@ public class ListNode {
 	ListNode 	next;
 	ListNode 	previous;
 	
-	// constructor - adds the data value and column number to the node
-	public ListNode(int data, Integer col) {
+	/**
+	 * Constructor - created a node object with the specified data item
+	 * @param data The data value of the new node
+	 */
+	public ListNode(int data) {
 		dataItem = data;
-		this.col = col;
 	}
 	
-	// print the current node
+	/**
+	 * Prints the current node to the screen
+	 */
 	public void printNode() {
 		System.out.print(dataItem + " ");
 	}
 	
-	// return the value of the node
+	/**
+	 * Returns the value of the node
+	 * @return The value of the node
+	 */
 	public int value(){
 		return dataItem;
-	}
-	
-	// return the column number of the node
-	public int colNo() {
-		return col;
 	}
 } 
