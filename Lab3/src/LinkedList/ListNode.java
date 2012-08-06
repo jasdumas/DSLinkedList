@@ -18,7 +18,13 @@ public class ListNode {
 		System.out.print(dataItem + " ");
 	}
 	
+	// return the value of the node
 	public int value(){
 		return dataItem;
+	}
+	
+	// return the column number of the node
+	public int colNo() {
+		return col;
 	}
 } 

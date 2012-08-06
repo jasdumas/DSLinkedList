@@ -1,0 +1,17 @@
+The following matrix:
+
+5 
+
+Has a determinant value of  .
+
+---------------------------------------
+
+The following matrix:
+
+2 3 
+
+
+Has a determinant value of  .
+
+---------------------------------------
+

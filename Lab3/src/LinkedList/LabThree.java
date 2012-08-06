@@ -20,7 +20,8 @@ public class LabThree {
 		ListNode 		node;
 		ListNode		row;
 		ListNode		col;
-		List[]		listArray;
+		List			list;
+		List[]			listArray;
 		LabThree		lab;
 		String []		stringSplit;
 		int				data;
@@ -28,13 +29,14 @@ public class LabThree {
 		int				dimension;
 		int 			size;
 		int				index;
+		int				det;
 		String			z;
 		
 		lab = new LabThree();
 		
 		//  Check for two command line arguments.
         if (args.length != 2) {
-            System.out.println("Usage:  java Recursion.LabThree [input file]" +
+            System.out.println("Usage:  java LinkedList.LabThree [input file]" +
                 " [output file]");
             System.exit(1);
         }
@@ -47,11 +49,6 @@ public class LabThree {
             System.err.println(exception.toString());
             return;
         }
-		
-		List list = new List();
-		
-		//listSize = list.ListSize();
-		//System.out.print("list size = " + listSize);
 		
 		// pass in values from input to build the lists
 		z = lab.readMatrix(input);
@@ -75,6 +72,9 @@ public class LabThree {
         	stringSplit = null;
         	listArray = new List[dimension];
         	for (int i = 0; i < dimension; i++) {
+        		
+        		list = new List();
+        		
         		try{
         			list.setHeader(i, null);
         			stringSplit = z.split(" ");
@@ -102,27 +102,42 @@ public class LabThree {
         		//row.printNode();
         		
         		listArray[i] = list;
-        		//List testList = listArray[i];
-        		//testList.printList();
-        		
-        		
-        		//list.printList();
-        		list.clearList();
+        	        		
+        		//list.clearList();
         		z = lab.readMatrix(input);
+        		
+        		//lab.writeOutput(list, output);
         	}
         	       	
-        	//System.out.println("The list is as follows:");
-        	//list.printList();
+        	//List testList = listArray[0];
+        	//testList.deleteNode(testList, 2);
+        	//System.out.println("The list after deletion is: ");
+        	//testList.printList();
+        	
+        	//compute the minor/determinant of the matrix
+        	//lab.Minor(listArray, 1);
+        	det = lab.Determinant(listArray);
+        	System.out.println("The determinant is " + det);
         	
         	// send data to output
+        	//System.out.println(Arrays.deepToString(listArray));
         	lab.writeOutput(listArray, output);
 		}
+		
+		// Close the input and output files and return to OS.
+        try {
+            input.close();
+            output.close();
+        } catch (Exception exception) {
+            System.err.println(exception.toString());
+        }
+        return;
 	}
 	
 	/**
 	 * Read in the strings of integers from the input file.
-	 * @param input		the first string in the input file.
-	 * @return The first string of integers.
+	 * @param input		the string in the input file.
+	 * @return The string of integers.
 	 */
 	private String readMatrix(BufferedReader input) {
 		
@@ -147,14 +162,17 @@ public class LabThree {
 	private void writeOutput(List[] listArray, BufferedWriter output) {
 		 
 		int size;
+		int listSize;
+		int nodeValue;
 		List list;
 		
 		size = listArray.length;
-		System.out.println(size);
+		//System.out.println(Arrays.deepToString(listArray));
+		//System.out.println(size);
 		
-		List testList = listArray[0];
-		System.out.println(testList.matrixSize());
-		testList.printList();
+		//List testList = listArray[0];
+		//System.out.print(testList.isEmpty());
+		//testList.printList();
 		
 		 try {
 			 	output.write("The following matrix:");
@@ -165,11 +183,27 @@ public class LabThree {
 			
 			 		list = listArray[i];
 			 		
-			 		list.printList();
+			 		listSize = list.listSize();
+			 		//System.out.println(listSize);
+			 		//System.out.print(list.isEmpty());
+			 		//list.printList();
 			 		
-			 		output.write(list.nodeValue(list, i));
-			
+			 		for (int j = 0; j < listSize; j++) {
+			 		
+				 		nodeValue = list.nodeValue(j);
+				 		output.write(nodeValue + " ");
+			 		}
+			 		
+			 		output.newLine();
 			 	}
+			 	
+			 	output.newLine();
+			 	output.write("Has a determinant value of " + " " + ".");
+			 	output.newLine();
+			 	output.newLine();
+			 	output.write("---------------------------------------");
+			 	output.newLine();
+			 	output.newLine();
 	        	
 	        } catch (IOException ioException) {
 	            System.err.println(ioException.toString());
@@ -177,6 +211,103 @@ public class LabThree {
 	        }
 	        
 	        return;
+	}
+	
+	/**
+	 * Compute the minor of the matrix passed into the application.
+	 * @param listArray	The matrix passed into the method.
+	 * @param j			The column value to be removed to compute the minor.
+	 * @return The minor of the passed-in matrix.
+	 */
+	public List[] Minor (List[] listArray, int j) {
+		
+		int		p;
+		int		matrixDimension;
+		List	list;
+		List	minorList;
+		List	tempList;
+		List[]	minor;
+		
+		matrixDimension = listArray[0].listSize();
+		System.out.println("the array length is " + matrixDimension);
+		minorList = listArray[0];
+		System.out.println("the minor list is:");
+		minorList.printList();
+		//minor = new List[matrixDimension];
+		
+		// if the matrix is 1x1 - return the value in the matrix as the minor.
+		// else calculate the minor of the matrix by creating a new array of lists (the minor) which excludes
+		// the first row and jth column from the original matrix.
+		if (matrixDimension == 1) {
+			minor = listArray;
+			System.out.println(Arrays.deepToString(minor));
+			System.out.println("test");
+			return minor;
+		}
+		else
+			minor = new List[matrixDimension-1];
+			System.out.println("the length of the minor is " + minor.length);
+			
+			p = 0;
+			for (int i = 0; i < matrixDimension; i++) {
+				
+				list = listArray[i];
+				
+				if (i == 0)
+					continue;
+				
+				for (int z = 0; z < list.listSize(); z++) {
+					
+					System.out.println("j is " + j);
+					list.deleteNode(list, j);
+					list.printList();
+					minor[p] = list;
+				}
+					
+				p++;
+			}
+			
+			//tempList = minor[0];
+			//tempList.printList();
+			//System.out.println(Arrays.deepToString(minor));
+			
+			return minor;
+	}
+	
+	/**
+	 * Compute the determinant of the matrix passed into the application
+	 * @param intArray	The original matrix passed into the program and each subsequent matrix created by the method 'minor'.
+	 * @return The value of the determinant of the matrix.
+	 */
+	public int Determinant (List[] listArray) {
+				
+		List[]		minor;
+		List		list;
+		int			det;
+		int			i;
+		int			element;
+		
+		det = 0;
+		i = 0;
+		list = listArray[0];
+		
+		System.out.println("the list is:");
+		list.printList();
+		
+		// if the matrix is 1x1 - return that value as the determinant.
+		// else compute the sum of the products and return the determinant.
+		for (int j = 0; j < listArray[0].listSize(); j++) {
+			
+			if (list.listSize() == 1) {
+				return list.nodeValue(0);
+			}
+			else
+				element = list.nodeValue(j);
+				minor = this.Minor(listArray, j);
+				det += (int) Math.pow(-1, (i + j))*element*Determinant(minor);
+			}
+
+		return det;
 	}
 
 }
